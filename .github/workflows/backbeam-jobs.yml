@@ -28,6 +28,6 @@ jobs:
           set -u
           code=$(curl -s -o body.json -w '%{http_code}' -m 120 -X POST \
             -H "x-backbeam-cron: ${CRON_SECRET}" \
-            https://backbeam-production.up.railway.app/api/cron/drain)
+            https://backbeam-production-f97b.up.railway.app/api/cron/drain)
           echo "HTTP $code"; cat body.json; echo
           [ "$code" = "200" ] || { echo "::error title=Backbeam jobs failed::HTTP $code"; exit 1; }
