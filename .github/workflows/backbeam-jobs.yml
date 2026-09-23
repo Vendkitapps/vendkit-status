@@ -1,0 +1,33 @@
+name: Backbeam background jobs
+
+# Every 15 minutes: retry any failed restock alerts and send Pro reminder
+# follow-ups. Instant alerts already go out the moment stock returns; this is
+# the safety net. The endpoint is protected by a shared secret stored here as
+# BACKBEAM_CRON_SECRET (and as CRON_SECRET on Railway). It is never printed.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backbeam-jobs
+  cancel-in-progress: false
+
+jobs:
+  drain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Run Backbeam drain + reminders
+        env:
+          CRON_SECRET: ${{ secrets.BACKBEAM_CRON_SECRET }}
+        run: |
+          set -u
+          code=$(curl -s -o body.json -w '%{http_code}' -m 120 -X POST \
+            -H "x-backbeam-cron: ${CRON_SECRET}" \
+            https://backbeam-production.up.railway.app/api/cron/drain)
+          echo "HTTP $code"; cat body.json; echo
+          [ "$code" = "200" ] || { echo "::error title=Backbeam jobs failed::HTTP $code"; exit 1; }
