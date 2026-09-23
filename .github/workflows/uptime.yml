@@ -1,0 +1,22 @@
+name: Uptime check
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # every 5 minutes (GitHub may delay runs a few minutes)
+  workflow_dispatch: {}     # "Run workflow" button for a manual check
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check every app's /healthz
+        run: bash check.sh
