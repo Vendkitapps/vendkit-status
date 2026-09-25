@@ -3,3 +3,5 @@
 backbeam   https://backbeam-production-f97b.up.railway.app/healthz
 pickadate  https://pickadate-production.up.railway.app/healthz
 shopprint  https://shopprint-production.up.railway.app/healthz
+kitwell    https://kitwell-production.up.railway.app/healthz
+measurely  https://measurely-production.up.railway.app/healthz
