@@ -8,3 +8,4 @@ measurely  https://measurely-production.up.railway.app/healthz
 warrantly  https://warrantly-production.up.railway.app/healthz
 partfit    https://partfit-production.up.railway.app/healthz
 accountly  https://accountly-production.up.railway.app/healthz
+sheetwell  https://sheetwell-production.up.railway.app/healthz
